@@ -1,0 +1,31 @@
+name: Java CI mit Maven
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v3
+
+      - name: Java einrichten
+        uses: actions/setup-java@v3
+        with:
+          java-version: '22'
+          distribution: 'temurin'
+
+      - name: Mit Maven bauen und testen
+        run: mvn clean verify
+
+      - name: JAR-Datei hochladen (nur auf main)
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v3
+        with:
+          name: TicTacToe-JAR
+          path: target/*.jar
