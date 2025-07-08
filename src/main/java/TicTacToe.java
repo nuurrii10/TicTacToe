@@ -16,11 +16,10 @@ public class TicTacToe {
 
     }
 
-    public void switchCurrentPlayer() {
-
+    private void switchCurrentPlayer() {
     }
 
-    public boolean hasWinner() {
+    private boolean hasWinner() {
         return false;
     }
 }
