@@ -14,42 +14,72 @@ public class TicTacToe {
     }
 
     public void start() {
-        board.clear();
         Scanner sc = new Scanner(System.in);
+        boolean playAgain = true;
 
-        while (!hasWinner() && !board.isFull()) {
-            board.print();
-            while (!board.isFull()) {
-                while (true) {
-                    System.out.println("Current Player:  " + currentPlayer.getMarker());
-                    int x = -1, y = -1;
-                    while (x < 0 || x > 2) {
-                        System.out.println("Set row (1-3): ");
+        while (playAgain) {
+            board.clear();
+            currentPlayer = player1;
+
+            while (!hasWinner() && !board.isFull()) {
+                board.print();
+                System.out.println("Current Player: " + currentPlayer.getMarker());
+
+                int x = -1, y = -1;
+
+                // Zeile eingeben
+                while (x < 0 || x > 2) {
+                    System.out.print("Set row (1-3): ");
+                    if (sc.hasNextInt()) {
                         x = sc.nextInt() - 1;
-                    }
-                    while (y < 0 || y > 2) {
-                        System.out.println("Set column (1-3): ");
-                        y = sc.nextInt() - 1;
-                    }
-                    if (board.isCellEmpty(x, y)) {
-                        board.place(x, y, currentPlayer.getMarker());
-                        if (hasWinner()) {
-                            board.print();
-                            System.out.println("Game won by Player " + currentPlayer.getMarker());
-                            return;
-                        }
-                        switchCurrentPlayer();
-                        break;
                     } else {
-                        System.out.println("Position taken. Please choose an empty field.");
+                        sc.next(); // ungültige Eingabe überspringen
+                        x = -1;
                     }
                 }
-                board.print();
-                if(board.isFull() && !hasWinner()) {
-                    System.out.println("Draw!");
+
+                // Spalte eingeben
+                while (y < 0 || y > 2) {
+                    System.out.print("Set column (1-3): ");
+                    if (sc.hasNextInt()) {
+                        y = sc.nextInt() - 1;
+                    } else {
+                        sc.next(); // ungültige Eingabe überspringen
+                        y = -1;
+                    }
+                }
+
+                // Feld belegen
+                if (board.isCellEmpty(x, y)) {
+                    board.place(x, y, currentPlayer.getMarker());
+
+                    // Überprüfen ob aktueller Spieler gewonnen hat
+                    if (hasWinner()) {
+                        board.print();
+                        System.out.println("Game won by Player " + currentPlayer.getMarker() + "!");
+                        break;
+                    }
+
+                    // Nur Spieler wechseln, wenn kein Sieger
+                    switchCurrentPlayer();
+                } else {
+                    System.out.println("Position taken. Please choose an empty field.");
                 }
             }
+
+            // Unentschieden prüfen
+            if (board.isFull() && !hasWinner()) {
+                board.print();
+                System.out.println("Draw!");
+            }
+
+            // Nochmal spielen?
+            System.out.print("Play again? (y/n): ");
+            String response = sc.next();
+            playAgain = response.equalsIgnoreCase("y");
         }
+
+        sc.close();
     }
 
     private void switchCurrentPlayer() {
