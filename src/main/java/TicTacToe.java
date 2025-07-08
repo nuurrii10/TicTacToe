@@ -17,26 +17,36 @@ public class TicTacToe {
         board.clear();
         Scanner sc = new Scanner(System.in);
 
-        while (!board.isFull()) {
-            while (true) {
+        while (!hasWinner() && !board.isFull()) {
+            board.print();
+            while (!board.isFull()) {
+                while (true) {
+                    System.out.println("Current Player:  " + currentPlayer.getMarker());
+                    int x = -1, y = -1;
+                    while (x < 0 || x > 2) {
+                        System.out.println("Set row (1-3): ");
+                        x = sc.nextInt() - 1;
+                    }
+                    while (y < 0 || y > 2) {
+                        System.out.println("Set column (1-3): ");
+                        y = sc.nextInt() - 1;
+                    }
+                    if (board.isCellEmpty(x, y)) {
+                        board.place(x, y, currentPlayer.getMarker());
+                        if (hasWinner()) {
+                            board.print();
+                            System.out.println("Game won by Player " + currentPlayer.getMarker());
+                            return;
+                        }
+                        switchCurrentPlayer();
+                        break;
+                    } else {
+                        System.out.println("Position taken. Please choose an empty field.");
+                    }
+                }
                 board.print();
-                System.out.println("Current Player:  " + currentPlayer.getMarker());
-                int x = -1;
-                while (x < 0 || x > 2) {
-                    System.out.println("Set row (1-3): ");
-                    x = sc.nextInt() - 1;
-                }
-                int y = -1;
-                while (y < 0 || y > 2) {
-                    System.out.println("Set column (1-3): ");
-                    y = sc.nextInt() - 1;
-                }
-                if (board.isCellEmpty(x, y)) {
-                    board.place(x, y, currentPlayer.getMarker());
-                    switchCurrentPlayer();
-                    break;
-                } else {
-                    System.out.println("Position taken. Please choose an empty field.");
+                if(board.isFull() && !hasWinner()) {
+                    System.out.println("Draw!");
                 }
             }
         }
@@ -48,6 +58,29 @@ public class TicTacToe {
     }
 
     private boolean hasWinner() {
+        char marker = currentPlayer.getMarker();
+        char[][] cells = board.getCells();
+
+        for (int i = 0; i < 3; i++) {
+            if (cells[i][0] == marker && cells[i][1] == marker && cells[i][2] == marker) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (cells[0][i] == marker && cells[1][i] == marker && cells[2][i] == marker) {
+                return true;
+            }
+        }
+
+        if (cells[0][0] == marker && cells[1][1] == marker && cells[2][2] == marker) {
+            return true;
+        }
+
+        if (cells[0][2] == marker && cells[1][1] == marker && cells[2][0] == marker) {
+            return true;
+        }
+
         return false;
     }
 }
