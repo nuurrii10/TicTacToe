@@ -39,7 +39,14 @@ public class Board {
     }
 
     public void print() {
-
+        System.out.println("_______");
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                System.out.print("|" + cells[i][j]);
+            }
+            System.out.println("|");
+        }
+        System.out.println("_______");
     }
 
     public char[][] getCells() {
@@ -51,8 +58,6 @@ public class Board {
         }
         return result;
     }
-
-
 }
 
 

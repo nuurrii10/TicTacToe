@@ -1,4 +1,8 @@
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,5 +73,30 @@ class BoardTest {
             }
         }
         assertFalse(board.isFull());
+    }
+
+    @Test
+    void  Test_print_ExpectedBoardFormat() {
+        Board board = new Board();
+
+        // Optional: Spielzug setzen, um Inhalt zu prüfen
+        board.place(1, 1, 'X');
+
+        // Standardausgabe umleiten
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(output));
+
+        // Methode aufrufen
+        board.print();
+
+        // Wieder zurücksetzen
+        System.setOut(originalOut);
+
+        // Output holen
+        String printed = output.toString();
+
+        assertTrue(printed.contains("|X|"));
+        assertTrue(printed.contains("_______"));
     }
 }
