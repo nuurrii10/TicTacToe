@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class TicTacToe {
     private Player player1;
@@ -13,10 +14,36 @@ public class TicTacToe {
     }
 
     public void start() {
+        board.clear();
+        Scanner sc = new Scanner(System.in);
 
+        while (!board.isFull()) {
+            while (true) {
+                System.out.println("Current Player:  " + currentPlayer.getMarker());
+                int x = -1;
+                while (x < 0 || x > 2) {
+                    System.out.println("Set row (1-3): ");
+                    x = sc.nextInt() - 1;
+                }
+                int y = -1;
+                while (y < 0 || y > 2) {
+                    System.out.println("Set column (1-3): ");
+                    y = sc.nextInt() - 1;
+                }
+                if (board.isCellEmpty(x, y)) {
+                    board.place(x, y, currentPlayer.getMarker());
+                    switchCurrentPlayer();
+                    break;
+                } else {
+                    System.out.println("Position taken. Please choose an empty field.");
+                }
+            }
+        }
     }
 
     private void switchCurrentPlayer() {
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+
     }
 
     private boolean hasWinner() {
