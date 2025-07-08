@@ -19,6 +19,7 @@ public class TicTacToe {
 
         while (!board.isFull()) {
             while (true) {
+                board.print();
                 System.out.println("Current Player:  " + currentPlayer.getMarker());
                 int x = -1;
                 while (x < 0 || x > 2) {
