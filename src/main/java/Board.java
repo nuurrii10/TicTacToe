@@ -2,34 +2,36 @@ public class Board {
     private char[][] cells;
 
     public Board() {
-        cells = new char[3][3];
+        this.cells = new char[3][3];
+        this.clear();
     }
 
     public void clear() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                cells[i][j] = ' ';
+                this.cells[i][j] = ' ';
             }
         }
     }
 
     public boolean isCellEmpty(int x, int y) {
-        if (cells[x][y] == ' ') {
+        if (this.cells[x][y] == ' ') {
             return true;
         }
         return false;
     }
 
     public void place(int x, int y, char marker) {
+
         if (isCellEmpty(x, y)) {
-            cells[x][y] = marker;
+            this.cells[x][y] = marker;
         }
     }
 
     public boolean isFull() {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                if (cells[i][j] == ' ')
+                if (this.cells[i][j] == ' ')
                     return false;
             }
         }
@@ -38,6 +40,16 @@ public class Board {
 
     public void print() {
 
+    }
+
+    public char[][] getCells() {
+        char[][] result = new char[3][3];
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[i].length; j++) {
+                result[i][j] = this.cells[i][j];
+            }
+        }
+        return result;
     }
 
 
